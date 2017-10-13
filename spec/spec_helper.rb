@@ -24,6 +24,10 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.before(:suite) do
+    Dir.mkdir(DATA_DIRECTORY) unless Dir.exist?(DATA_DIRECTORY)
+  end
+
   # Tests create test images so we need to clear the data directory
   # to give the next test a clean slate.
   config.after(:each) do
