@@ -3,6 +3,8 @@ require "base64"
 
 class Image
   VALID_TYPES = %w(jpg jpeg png).freeze
+  MAX_SIZE = 5000
+  MIN_SIZE = 350
 
   def initialize(filename:, data:)
     @filename = filename
@@ -19,7 +21,7 @@ class Image
     end
   rescue => e
     @errors = e.message
-    nil
+    false
   end
 
   def errors
@@ -52,8 +54,8 @@ class Image
     !@filename.nil? &&
       !@data.nil? &&
       VALID_TYPES.include?(Image.extension(@filename)) &&
-      width >= 350 && width <= 5000 &&
-      height >= 350 && height <= 5000
+      width >= MIN_SIZE && width <= MAX_SIZE &&
+      height >= MIN_SIZE && height <= MAX_SIZE
   end
 
   def write_to_disk!
