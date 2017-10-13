@@ -1,7 +1,22 @@
 require "spec_helper"
 
 RSpec.describe "Routehappy API" do
-  it "responds to /images" do
+  it "responds to POST /image" do
+    post "/image"
+    expect(last_response).to be_ok
+  end
+
+  it "can upload a file using the POST /image route" do
+    image = unique_image_from_datafiles
+    tempfile = File.open(image)
+    expect(data_to_exist?(image)).to eq(false)
+
+    post "/image", file: { filename: File.basename(image), tempfile: tempfile }
+
+    expect(data_to_exist?(image)).to eq(true)
+  end
+
+  it "responds to GET /images" do
     get "/images"
     expect(last_response).to be_ok
   end

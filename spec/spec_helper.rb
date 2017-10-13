@@ -53,3 +53,7 @@ def unique_image_from_datafiles
     return image unless File.exist?("#{DATA_DIRECTORY}/#{File.basename(image)}")
   end
 end
+
+def data_to_exist?(name)
+  File.exist?("#{DATA_DIRECTORY}/#{File.basename(name)}")
+end

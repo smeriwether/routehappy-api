@@ -3,6 +3,44 @@ require "spec_helper"
 RSpec.describe Image do
   it { expect(Image).to respond_to(:all) }
 
+  it "can be initialized" do
+    expect(Image.new(filename: "", data: "")).to be_a(Image)
+  end
+
+  describe "#save" do
+    it "can save an image to the data directory" do
+      image = unique_image_from_datafiles
+      data = File.open(image)
+
+      saved = Image.new(filename: File.basename(image), data: data).save
+
+      expect(saved).to eq(true)
+      expect(data_to_exist?(image)).to eq(true)
+    end
+
+    it "doesn't save if there isn't a filename" do
+      expect(Image.new(filename: nil, data: "").save).to be_falsey
+    end
+
+    it "doesn't save if there isn't data" do
+      expect(Image.new(filename: "", data: nil).save).to be_falsey
+    end
+
+    it "doesn't raise an error if the file isn't readable/found" do
+      expect(Image.new(filename: "", data: "").save).to be_falsey
+    end
+
+    it "doesn't save anything but jpg & png" do
+      image = "#{IMAGES_DIRECTORY}/not-image.txt"
+      data = File.open(image)
+
+      saved = Image.new(filename: File.basename(image), data: data).save
+
+      expect(saved).to be_falsey
+      expect(data_to_exist?(image)).to eq(false)
+    end
+  end
+
   describe ".all" do
     it "returns an empty array when there are no images on disk" do
       expect(Image.all.size).to eq(0)
