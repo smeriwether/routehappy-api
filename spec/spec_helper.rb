@@ -4,7 +4,8 @@ require "rack/test"
 require "rspec"
 
 DATA_DIRECTORY = "./spec/data".freeze
-DATAFILES_DIRECTORY = "./spec/support/datafiles/".freeze
+IMAGES_DIRECTORY = "./spec/support/images".freeze
+BASE64_DIRECTORY = "./spec/support/base64".freeze
 
 ENV["RACK_ENV"] = "test"
 ENV["DATA_DIRECTORY"] = DATA_DIRECTORY
@@ -34,15 +35,19 @@ def clear_data_directory!
   FileUtils.rm_rf Dir.glob("#{DATA_DIRECTORY}/*")
 end
 
-def add_image_to_disk!
-  image = unique_image_from_datafiles
+def add_image_to_disk!(filename = nil)
+  image = if filename
+            "#{IMAGES_DIRECTORY}/#{filename}"
+          else
+            unique_image_from_datafiles
+          end
   basename = File.basename(image)
   FileUtils.cp(image, "#{DATA_DIRECTORY}/#{basename}")
   basename
 end
 
 def unique_image_from_datafiles
-  images = Dir.glob("#{DATAFILES_DIRECTORY}/*")
+  images = Dir.glob("#{IMAGES_DIRECTORY}/*.{jpg,png}")
   images.size.times do
     image = images.sample
     return image unless File.exist?("#{DATA_DIRECTORY}/#{File.basename(image)}")
