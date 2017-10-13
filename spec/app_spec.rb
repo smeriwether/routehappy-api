@@ -14,6 +14,7 @@ RSpec.describe "Routehappy API" do
   it "returns a 500 if the image can't save" do
     post "/image", file: {}
     expect(last_response.status).to eq(500)
+    expect(last_response.body).not_to be_empty
   end
 
   it "responds to GET /images" do

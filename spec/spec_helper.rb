@@ -35,7 +35,7 @@ RSpec.configure do |config|
 end
 
 def clear_data_directory!
-  FileUtils.rm_rf Dir.glob("#{DATA_DIRECTORY}/*")
+  FileUtils.rm_rf(Dir.glob("#{DATA_DIRECTORY}/*"))
 end
 
 def add_image_to_disk!(filename = nil)
@@ -50,7 +50,7 @@ def add_image_to_disk!(filename = nil)
 end
 
 def unique_image_from_datafiles
-  images = Dir.glob("#{IMAGES_DIRECTORY}/*.{jpg,png}")
+  images = files_from_directory(IMAGES_DIRECTORY)
   images.size.times do
     image = images.sample
     return image unless File.exist?("#{DATA_DIRECTORY}/#{File.basename(image)}")
@@ -64,5 +64,13 @@ def data_exist?(name)
 end
 
 def data_files
-  Dir.glob("#{DATA_DIRECTORY}/*.{jpg,png}")
+  files_from_directory(DATA_DIRECTORY)
+end
+
+def files_from_directory(dir)
+  Dir.glob("#{dir}/*.{#{valid_image_types}}")
+end
+
+def valid_image_types
+  Image::VALID_TYPES.join(",")
 end

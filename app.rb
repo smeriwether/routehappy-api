@@ -17,6 +17,7 @@ post "/image" do
   if image.save
     status 200
   else
+    body image.errors
     status 500
   end
 end

@@ -40,7 +40,7 @@ RSpec.describe Image do
       expect(Image.new(filename: "", data: "").save).to be_falsey
     end
 
-    it "doesn't save anything but jpg & png" do
+    it "doesn't save anything but jpg, png & jpeg" do
       image = "#{IMAGES_DIRECTORY}/not-image.txt"
       data = File.open(image)
 
@@ -48,6 +48,37 @@ RSpec.describe Image do
 
       expect(saved).to be_falsey
       expect(data_exist?(image)).to eq(false)
+    end
+  end
+
+  describe "#errors" do
+    it "returns nil when there are no errors" do
+      image = unique_image_from_datafiles
+      data = File.open(image)
+
+      image = Image.new(filename: File.basename(image), data: data)
+      image.save
+      errors = image.errors
+
+      expect(errors).to be_nil
+    end
+
+    it "doesn't return nil when the record is invalid" do
+      image = unique_image_from_datafiles
+
+      image = Image.new(filename: File.basename(image), data: nil)
+      image.save
+      errors = image.errors
+
+      expect(errors).not_to be_nil
+    end
+
+    it "doesn't return nil when there was an exception thrown" do
+      image = Image.new(filename: "fake-image.jpg", data: "")
+      image.save
+      errors = image.errors
+
+      expect(errors).not_to be_nil
     end
   end
 

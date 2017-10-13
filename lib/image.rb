@@ -1,17 +1,30 @@
 class Image
+  VALID_TYPES = %w(jpg jpeg png).freeze
+
   def initialize(filename:, data:)
     @filename = filename
     @data = data
+    @errors = nil
   end
 
   def save
-    write_to_disk! if valid?
-  rescue
+    if valid?
+      write_to_disk!
+    else
+      @errors = "Invalid Image"
+      false
+    end
+  rescue => e
+    @errors = e.message
     nil
   end
 
+  def errors
+    @errors
+  end
+
   def self.all
-    image_names = Dir.glob("#{DATA_DIRECTORY}/*.{jpg,png}")
+    image_names = Dir.glob("#{DATA_DIRECTORY}/*.{#{VALID_TYPES.join(',')}}")
     image_names.map do |image|
       {
         filename: File.basename(image),
@@ -31,9 +44,7 @@ class Image
   private
 
   def valid?
-    !@filename.nil? &&
-      ["jpg", "png"].include?(Image.extension(@filename)) &&
-      !@data.nil?
+    !@filename.nil? && VALID_TYPES.include?(Image.extension(@filename)) && !@data.nil?
   end
 
   def write_to_disk!
