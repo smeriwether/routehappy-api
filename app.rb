@@ -11,7 +11,11 @@ end
 
 post "/image" do
   image = Image.new(image_params)
-  image.save
+  if image.save
+    status 200
+  else
+    status 500
+  end
 end
 
 def image_params

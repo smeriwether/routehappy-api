@@ -1,8 +1,9 @@
 source "https://rubygems.org"
 ruby "2.4.1"
 
-gem "sinatra", "~> 1.4"
-gem "sinatra-contrib", "~> 1.4"
+gem "sinatra", "~> 2.0"
+gem "sinatra-contrib", "~> 2.0"
+gem "thin", "~> 1.7"
 
 group :development, :test do
   gem "pry", "~> 0.10.4"

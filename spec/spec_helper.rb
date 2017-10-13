@@ -54,6 +54,12 @@ def unique_image_from_datafiles
   end
 end
 
-def data_to_exist?(name)
-  File.exist?("#{DATA_DIRECTORY}/#{File.basename(name)}")
+def data_exist?(name)
+  data_files.any? do |file|
+    file.include?(File.basename(name))
+  end
+end
+
+def data_files
+  Dir.glob("#{DATA_DIRECTORY}/*.{jpg,png}")
 end

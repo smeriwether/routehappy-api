@@ -15,7 +15,17 @@ RSpec.describe Image do
       saved = Image.new(filename: File.basename(image), data: data).save
 
       expect(saved).to eq(true)
-      expect(data_to_exist?(image)).to eq(true)
+      expect(data_exist?(image)).to eq(true)
+    end
+
+    it "can save 2 images with the same name" do
+      image_name = add_image_to_disk!
+      data = File.open("#{IMAGES_DIRECTORY}/#{image_name}")
+
+      saved = Image.new(filename: File.basename(image_name), data: data).save
+
+      expect(saved).to eq(true)
+      expect(data_files.size).to eq(2)
     end
 
     it "doesn't save if there isn't a filename" do
@@ -37,7 +47,7 @@ RSpec.describe Image do
       saved = Image.new(filename: File.basename(image), data: data).save
 
       expect(saved).to be_falsey
-      expect(data_to_exist?(image)).to eq(false)
+      expect(data_exist?(image)).to eq(false)
     end
   end
 

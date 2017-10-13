@@ -39,9 +39,13 @@ class Image
   end
 
   def write_to_disk!
-    File.open("#{DATA_DIRECTORY}/#{@filename}", "wb") do |file|
+    File.open("#{DATA_DIRECTORY}/#{unique_identifier}-#{@filename}", "wb") do |file|
       file.write(@data.read)
     end
     true
+  end
+
+  def unique_identifier
+    Time.now.to_i
   end
 end
