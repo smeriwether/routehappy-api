@@ -2,6 +2,8 @@
 
 A light sinatra API to list and upload photos.
 
+[![Build Status](https://travis-ci.org/smeriwether/routehappy-api.svg?branch=master)](https://travis-ci.org/smeriwether/routehappy-api)
+
 ## Overview
 
 The API has 2 endpoints:
