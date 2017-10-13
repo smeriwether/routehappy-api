@@ -1,3 +1,6 @@
+require "dimensions"
+require "base64"
+
 class Image
   VALID_TYPES = %w(jpg jpeg png).freeze
 
@@ -44,7 +47,13 @@ class Image
   private
 
   def valid?
-    !@filename.nil? && VALID_TYPES.include?(Image.extension(@filename)) && !@data.nil?
+    width = Dimensions.width(@data.path)
+    height = Dimensions.height(@data.path)
+    !@filename.nil? &&
+      !@data.nil? &&
+      VALID_TYPES.include?(Image.extension(@filename)) &&
+      width >= 350 && width <= 5000 &&
+      height >= 350 && height <= 5000
   end
 
   def write_to_disk!

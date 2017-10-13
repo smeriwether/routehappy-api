@@ -49,6 +49,26 @@ RSpec.describe Image do
       expect(saved).to be_falsey
       expect(data_exist?(image)).to eq(false)
     end
+
+    it "doesn't save images smaller than 350x350" do
+      image = "#{BAD_IMAGES_DIRECTORY}/too-small.jpg"
+      data = File.open(image)
+
+      saved = Image.new(filename: File.basename(image), data: data).save
+
+      expect(saved).to be_falsey
+      expect(data_exist?(image)).to eq(false)
+    end
+
+    it "doesn't save images larger than 5000x5000" do
+      image = "#{BAD_IMAGES_DIRECTORY}/too-big.jpg"
+      data = File.open(image)
+
+      saved = Image.new(filename: File.basename(image), data: data).save
+
+      expect(saved).to be_falsey
+      expect(data_exist?(image)).to eq(false)
+    end
   end
 
   describe "#errors" do

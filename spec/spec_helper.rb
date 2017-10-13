@@ -4,6 +4,7 @@ require "rack/test"
 require "rspec"
 
 IMAGES_DIRECTORY = "./spec/support/images".freeze
+BAD_IMAGES_DIRECTORY = "./spec/support/bad-images".freeze
 BASE64_DIRECTORY = "./spec/support/base64".freeze
 
 ENV["RACK_ENV"] = "test"
@@ -49,8 +50,8 @@ def add_image_to_disk!(filename = nil)
   basename
 end
 
-def unique_image_from_datafiles
-  images = files_from_directory(IMAGES_DIRECTORY)
+def unique_image_from_datafiles(dir = IMAGES_DIRECTORY)
+  images = files_from_directory(dir)
   images.size.times do
     image = images.sample
     return image unless File.exist?("#{DATA_DIRECTORY}/#{File.basename(image)}")
