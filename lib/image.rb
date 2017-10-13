@@ -1,6 +1,4 @@
 class Image
-  DATA_DIRECTORY = ENV.fetch("DATA_DIRECTORY", "./data/")
-
   def initialize(filename:, data:)
     @filename = filename
     @data = data

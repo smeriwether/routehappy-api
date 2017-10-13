@@ -3,12 +3,11 @@ require "pry"
 require "rack/test"
 require "rspec"
 
-DATA_DIRECTORY = "./spec/data".freeze
 IMAGES_DIRECTORY = "./spec/support/images".freeze
 BASE64_DIRECTORY = "./spec/support/base64".freeze
 
 ENV["RACK_ENV"] = "test"
-ENV["DATA_DIRECTORY"] = DATA_DIRECTORY
+ENV["DATA_DIRECTORY"] = "./spec/data"
 
 require File.expand_path "../../app.rb", __FILE__
 

@@ -5,6 +5,9 @@ require "base64"
 
 require_relative "lib/image"
 
+DATA_DIRECTORY = ENV.fetch("DATA_DIRECTORY", "./data/")
+Dir.mkdir(DATA_DIRECTORY) unless Dir.exist?(DATA_DIRECTORY)
+
 get "/images" do
   json images: Image.all
 end
